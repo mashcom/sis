@@ -40,6 +40,7 @@ public class StudentControllerTest {
         this.sex = faker.gender().binaryTypes();
 
 
+
     }
 
 

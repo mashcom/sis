@@ -3,9 +3,7 @@ package mashcom.co.zw.sis.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import mashcom.co.zw.sis.models.Registration;
-import mashcom.co.zw.sis.repositories.RegistrationRepository;
-import mashcom.co.zw.sis.services.RegistrationService;
+import mashcom.co.zw.sis.models.*;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,48 +18,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-
 @AutoConfigureMockMvc
-public class RegistrationControllerTest {
+public class ClassroomControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    RegistrationRepository registrationRepository;
-
-    @Autowired
-    RegistrationService registrationService;
 
     @Test
-    public void shouldRegisterStudent() throws Exception {
+    public void shouldSaveNewClassroom() throws Exception {
 
         Faker faker = new Faker();
 
-        Registration registration = new Registration();
-        registration.setPeriodId(1);
-        registration.setStudentId(1);
+        Classroom classroom = new Classroom();
+        classroom.setGradeId(1);
+        classroom.setPeriodId(1);
+        classroom.setStatus("ACTIVE");
+        classroom.setTeacherId(1);
+        classroom.setCreateAt(faker.date().birthday());
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
         ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        String requestJson = ow.writeValueAsString(registration);
+        String requestJson = ow.writeValueAsString(classroom);
 
-        this.mockMvc.perform(post("/api/v1/registration")
+        this.mockMvc.perform(post("/api/v1/classroom")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestJson))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void shouldDeregisterStudent() throws Exception {
-
-        var registration = registrationService.findById(1);
-        var response = registration.isPresent()?status().isOk():status().isNotFound();
-        this.mockMvc.perform(delete("/api/v1/registration/1"))
-                .andDo(print())
-                .andExpect(response);
-    }
 
 }

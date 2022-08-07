@@ -22,8 +22,9 @@ public class RegistrationController {
      * @// TODO: 8/7/2022 implement method
      */
 
+    @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Registration> getAllRegistration(Boolean onActive) {
-        return new ResponseEntity(null, HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity(null, HttpStatus.OK);
     }
 
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -32,10 +33,15 @@ public class RegistrationController {
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Registration> deregisterStudent(@RequestBody  Integer id) {
+    @DeleteMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Registration> deregisterStudent(@PathVariable Integer id) {
+        var registation = registrationService.findById(id);
+        System.out.println(registation);
+        if (registation.isEmpty()) {
+            return new ResponseEntity("", HttpStatus.NOT_FOUND);
+        }
         var response = registrationService.deregisterStudent(id);
-        return new ResponseEntity(response, response?HttpStatus.OK:HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 
