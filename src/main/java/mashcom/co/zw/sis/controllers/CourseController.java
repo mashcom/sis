@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/course")
+@CrossOrigin(allowedHeaders = "*")
 public class CourseController {
 
     @Autowired

@@ -1,5 +1,6 @@
 package mashcom.co.zw.sis.controllers;
 
+import mashcom.co.zw.sis.enums.PersonType;
 import mashcom.co.zw.sis.exceptions.StudentNotFoundException;
 import mashcom.co.zw.sis.http.Response;
 import mashcom.co.zw.sis.models.Person;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/student")
+@CrossOrigin(allowedHeaders = "*")
 public class StudentController {
 
     @Autowired
@@ -34,7 +36,7 @@ public class StudentController {
      */
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map> getAllStudents() {
-        Optional<Collection<Map>> students = personService.getAllStudents(Integer.valueOf(1));
+        Optional<Collection<Map>> students = studentService.getAllStudents(Integer.valueOf(1));
         return new ResponseEntity(students, HttpStatus.OK);
     }
 
@@ -46,8 +48,7 @@ public class StudentController {
      */
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Person> saveStudent(@RequestBody Person person) {
-        Person response = personService.saveStudent(person);
-
+        Person response = personService.savePerson(person, PersonType.STUDENT);
         return new ResponseEntity(response, HttpStatus.OK);
     }
 

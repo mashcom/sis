@@ -1,7 +1,11 @@
 package mashcom.co.zw.sis.models;
 
+import mashcom.co.zw.sis.enums.PersonType;
+import mashcom.co.zw.sis.services.PersonService;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "person")
@@ -21,6 +25,14 @@ public class Person {
     private String phoneNumber;
     private String alternativePhoneNumber;
     private Date dob;
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 
     private String sex;
 

@@ -9,8 +9,7 @@ public class ActivePeriodResults {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer periodId;
-
-
+    
     public Integer getPeriodId() {
         return periodId;
     }

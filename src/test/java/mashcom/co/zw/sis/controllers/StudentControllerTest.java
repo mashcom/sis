@@ -3,6 +3,7 @@ package mashcom.co.zw.sis.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import mashcom.co.zw.sis.enums.PersonType;
 import mashcom.co.zw.sis.models.Person;
 import mashcom.co.zw.sis.models.StudentParent;
 import net.datafaker.Faker;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.sql.Timestamp;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,6 +30,7 @@ public class StudentControllerTest {
     String firstName, lastName, email, phoneNumber, alternativePhoneNumber, password;
     Boolean booleanType;
     String sex;
+    Timestamp dob;
     StudentControllerTest() {
         Faker faker = new Faker();
 
@@ -38,6 +42,7 @@ public class StudentControllerTest {
         this.password = faker.random().hex();
         this.booleanType = faker.bool().bool();
         this.sex = faker.gender().binaryTypes();
+        this.dob = faker.date().birthday();
 
 
 
@@ -58,6 +63,8 @@ public class StudentControllerTest {
         person.setSchoolId(1);
         person.setPassword(password);
         person.setSex(sex);
+        person.setDob(dob);
+
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
