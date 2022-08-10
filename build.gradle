@@ -4,6 +4,7 @@ plugins {
     id 'java'
 }
 
+
 group = 'mashcom.co.zw'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '18'
@@ -17,11 +18,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     //implementation 'org.jetbrains:annotations:19.0.0'
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'mysql:mysql-connector- java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'net.datafaker:datafaker:1.5.0'
+    implementation 'com.auth0:java-jwt:3.18.1'
+
 
 }
 

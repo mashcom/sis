@@ -15,5 +15,7 @@ public interface PersonRepository extends JpaRepository<Person, Integer> {
     @Query(value = "SELECT * FROM person WHERE schoolId=?", nativeQuery = true)
     Optional<Collection<Map>> getAll(Integer schoolId);
 
+    Person findByEmail(String email);
+
 
 }
