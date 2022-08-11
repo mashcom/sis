@@ -5,6 +5,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import mashcom.co.zw.sis.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,16 +23,27 @@ import java.io.IOException;
 import java.util.*;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    @Autowired
+    UserService userService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/login")) {
+        logger.info(request.getServletPath());
+
+
+        if (request.getServletPath().equals("/login") || request.getServletPath().equals("/api/v1/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
+                logger.info(authorizationHeader.toString());
                 try {
+                    logger.info(authorizationHeader.substring("Bearer ".length()));
                     String token = authorizationHeader.substring("Bearer ".length());
+
+
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = jwtVerifier.verify(token);
@@ -50,11 +63,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                 } catch (Exception exception) {
                     logger.error(exception.getMessage());
-                    response.setHeader("error",exception.getMessage());
+                    response.setHeader("error", exception.getMessage());
                     response.setStatus(HttpStatus.FORBIDDEN.value());
-                    //response.sendError(HttpHeaders.);
                     Map<String, String> error = new HashMap<>();
-                    error.put("error_message", exception.getMessage());
+                    error.put("error", exception.getMessage());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
                     new ObjectMapper().writeValue(response.getOutputStream(), error);

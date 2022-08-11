@@ -1,6 +1,7 @@
 package mashcom.co.zw.sis.services;
 
 import mashcom.co.zw.sis.models.Person;
+import mashcom.co.zw.sis.models.User;
 import mashcom.co.zw.sis.repositories.PersonRepository;
 import mashcom.co.zw.sis.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     UserRepository userRepository;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepository.findByEmail(username);
@@ -35,5 +37,13 @@ public class UserService implements UserDetailsService {
         });
         return new org.springframework.security.core.userdetails.User(person.getEmail(), user.getPassword(),authorities);
 
+    }
+
+    public User getUser(String username){
+        Person person = personRepository.findByEmail(username);
+        if (person == null) {
+            throw new UsernameNotFoundException("User with email {} not found!");
+        }
+        return userRepository.findByPersonId(person.getId());
     }
 }
